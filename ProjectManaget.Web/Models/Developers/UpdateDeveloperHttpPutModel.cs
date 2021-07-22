@@ -2,7 +2,7 @@
 
 namespace ProjectManager.Web.Models.Developers
 {
-    public class EditDeveloperHttpPutModel
+    public class UpdateDeveloperHttpPutModel
     {
         public int Id { get; set; }
         public string FirstName { get; set; }
@@ -11,9 +11,9 @@ namespace ProjectManager.Web.Models.Developers
         public string Phone { get; set; }
     }
 
-    public class EditDeveloperHttpPutModelValidator : AbstractValidator<EditDeveloperHttpPutModel>
+    public class UpdateDeveloperHttpPutModelValidator : AbstractValidator<UpdateDeveloperHttpPutModel>
     {
-        public EditDeveloperHttpPutModelValidator()
+        public UpdateDeveloperHttpPutModelValidator()
         {
             RuleFor(e => e.FirstName).NotEmpty();
             RuleFor(e => e.LastName).NotEmpty();

@@ -1,11 +1,9 @@
 ﻿using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
-using ProjectManager.Database;
 using ProjectManager.Services.Developer;
 using ProjectManager.Services.Project;
 using ProjectManager.Web.Models.Projects;
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace ProjectManager.Web.Controllers

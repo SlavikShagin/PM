@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using ProjectManaget.Web.Models;
+using ProjectManager.Web.Models;
 using System.Diagnostics;
 
 namespace ProjectManager.Web.Controllers

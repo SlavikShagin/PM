@@ -164,6 +164,34 @@
                     }
                 });
             });
+            $("#editPrjSubmit").click(function (e) {
+                var link = '@Url.Action("AjaxPrjEdit", "Projects")';
+                var pName = document.getElementById("editProjectName").value;
+                var pDesc = document.getElementById("editProjectDescription").innerHTML;
+                var Devs = [11, 12];
+
+                var data = {
+                    Id: Id,
+                    Name: pName,
+                    ProjectSubject: pDesc,
+                    Developers: Devs,
+                }
+                var jsonData = JSON.stringify(data);
+
+                console.log(jsonData);
+
+                $.ajax({
+                    type: "PUT",
+                    url: '@Url.Action("AjaxPrjEdit", "Projects")',
+                    dataType: 'json',
+                    contentType: 'application/json',
+                    data: jsonData,
+                    traditional: true,
+                    success: function () {
+                        location.reload();
+                    }
+                });
+            });
         });
         var Id;
         function modalData(id) {
@@ -185,38 +213,14 @@
         }
 
         function dataPreview(id) {
-            var pnId = "prjName-" + id; 
+            var pnId = "prjName-" + id;
             var pdId = "prjDesc-" + id;
             document.getElementById("editProjectName").value = document.getElementById(pnId).innerHTML;
             document.getElementById("editProjectDescription").innerHTML = document.getElementById(pdId).innerHTML;
         }
 
         function editPrj() {
-            var link = '@Url.Action("AjaxPrjEdit", "Projects")';
-            var pName = document.getElementById("editProjectName").value;
-            var pDesc = document.getElementById("editProjectDescription").innerHTML;
-            var Devs = [10, 11];
 
-            var data = {
-                PId: Id,
-                Name: pName,
-                ProjectSubject: pDesc,
-                Developers: Devs,
-            }
-            var jsonData = JSON.stringify(data);
-
-            console.log(jsonData);
-
-            $.ajax({
-                url: link,
-                dataType: "json",
-                type: "PUT",
-                contentType: 'application/json',
-                data: jsonData,
-                success: function () {
-                    location.reload();
-                }
-            });
         }
     </script>
 }

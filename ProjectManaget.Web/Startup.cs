@@ -52,6 +52,7 @@ namespace ProjectManager.Web
             services.AddTransient<IValidator<CreateDeveloperHttpPostModel>, CreateDeveloperHttpPostModelValidator>();
             services.AddTransient<IValidator<CreateProjectHttpPostModel>, CreateProjectHttpPostModelValidator>();
             services.AddTransient<IValidator<UpdateProjectHttpPutModel>, UpdateProjectHttpPutModelValidator>();
+            services.AddTransient<IValidator<UpdateDeveloperHttpPutModel>, UpdateDeveloperHttpPutModelValidator>();
             #endregion
         }
 

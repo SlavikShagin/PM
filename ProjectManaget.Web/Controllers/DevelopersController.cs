@@ -10,13 +10,13 @@ namespace ProjectManager.Web.Controllers
     public class DevelopersController : Controller
     {
         private readonly IValidator<CreateDeveloperHttpPostModel> _validatorCreateDeveloperModel;
-        private readonly IValidator<EditDeveloperHttpPutModel> _validatorEditDeveloperModel;
+        private readonly IValidator<UpdateDeveloperHttpPutModel> _validatorEditDeveloperModel;
         private readonly IDeveloperService _developerService;
 
         public DevelopersController(
             IDeveloperService developerService,
             IValidator<CreateDeveloperHttpPostModel> validatorCreateDeveloperModel,
-            IValidator<EditDeveloperHttpPutModel> validatorEditDeveloperModel)
+            IValidator<UpdateDeveloperHttpPutModel> validatorEditDeveloperModel)
         {
             _developerService = developerService;
             _validatorCreateDeveloperModel = validatorCreateDeveloperModel;
@@ -66,7 +66,7 @@ namespace ProjectManager.Web.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> AjaxDevEdit([FromBody] EditDeveloperHttpPutModel vm)
+        public async Task<IActionResult> AjaxDevEdit([FromBody] UpdateDeveloperHttpPutModel vm)
         {
             var validationResult = _validatorEditDeveloperModel.Validate(vm);
 
