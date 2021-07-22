@@ -1,6 +1,7 @@
 ﻿using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using ProjectManager.Database;
+using ProjectManager.Services.Developer;
 using ProjectManager.Services.Project;
 using ProjectManager.Web.Models.Projects;
 using System;
@@ -14,13 +15,16 @@ namespace ProjectManager.Web.Controllers
         private readonly IValidator<CreateProjectHttpPostModel> _validatorCreateProjectModel;
         private readonly IValidator<UpdateProjectHttpPutModel> _validatorUpdateProjectModel;
         private readonly IProjectService _projectService;
+        private readonly IDeveloperService _developerService;
 
         public ProjectsController(
             IValidator<CreateProjectHttpPostModel> validatorCreateProjectModel,
             IValidator<UpdateProjectHttpPutModel> validatorUpdateProjectModel,
-            IProjectService projectService)
+            IProjectService projectService,
+            IDeveloperService developerService)
         {
             _projectService = projectService;
+            _developerService = developerService;
             _validatorCreateProjectModel = validatorCreateProjectModel;
             _validatorUpdateProjectModel = validatorUpdateProjectModel;
         }

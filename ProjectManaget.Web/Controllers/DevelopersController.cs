@@ -9,15 +9,18 @@ namespace ProjectManager.Web.Controllers
 {
     public class DevelopersController : Controller
     {
-        private readonly IValidator<CreateDeveloperHttpPostModel> _validatorDeveloperModel;
+        private readonly IValidator<CreateDeveloperHttpPostModel> _validatorCreateDeveloperModel;
+        private readonly IValidator<EditDeveloperHttpPutModel> _validatorEditDeveloperModel;
         private readonly IDeveloperService _developerService;
 
         public DevelopersController(
             IDeveloperService developerService,
-            IValidator<CreateDeveloperHttpPostModel> validatorDeveloperModel)
+            IValidator<CreateDeveloperHttpPostModel> validatorCreateDeveloperModel,
+            IValidator<EditDeveloperHttpPutModel> validatorEditDeveloperModel)
         {
             _developerService = developerService;
-            _validatorDeveloperModel = validatorDeveloperModel;
+            _validatorCreateDeveloperModel = validatorCreateDeveloperModel;
+            _validatorEditDeveloperModel = validatorEditDeveloperModel;
         }
         [HttpGet]
         public async Task<IActionResult> List()
@@ -35,7 +38,7 @@ namespace ProjectManager.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> AjaxDevPost([FromBody] CreateDeveloperHttpPostModel vm)
         {
-            var validationResult = _validatorDeveloperModel.Validate(vm);
+            var validationResult = _validatorCreateDeveloperModel.Validate(vm);
 
             if (!validationResult.IsValid)
             {
@@ -60,6 +63,27 @@ namespace ProjectManager.Web.Controllers
             await _developerService.DeleteEntry(developerId);
 
             return Ok();
+        }
+
+        [HttpPut]
+        public async Task<IActionResult> AjaxDevEdit([FromBody] EditDeveloperHttpPutModel vm)
+        {
+            var validationResult = _validatorEditDeveloperModel.Validate(vm);
+
+            if (!validationResult.IsValid)
+            {
+                var errorResponse = new
+                {
+                    ErrorType = "ValidationError",
+                    Errors = validationResult.Errors
+                };
+
+                return BadRequest(errorResponse);
+            }
+
+            await _developerService.EditEntry(vm.Id, vm.FirstName, vm.LastName, vm.EMail, vm.Phone);
+
+            return Json(new { success = true });
         }
     }
 }

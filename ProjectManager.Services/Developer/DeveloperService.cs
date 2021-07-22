@@ -50,5 +50,21 @@ namespace ProjectManager.Services.Developer
             _repository.SaveChanges();
             return entity; /*TODO fix*/
         }
+
+        public async Task<DeveloperEntity> EditEntry(int developerId, string firstName, string lastName, string eMail, string phone)
+        {
+            DeveloperEntity entity = new DeveloperEntity
+            {
+                Id = developerId,
+                FirstName = firstName,
+                LastName = lastName,
+                EMail = eMail,
+                Phone = phone,
+            };
+
+            _repository.Update(entity);
+            _repository.SaveChanges();
+            return entity;
+        }
     }
 }

@@ -31,7 +31,7 @@
                             <td id="prjDevs-@prj.Id">devs dropdown (modal)</td>
                             <td>
                                 <a href="#" class="btn icon icon-left btn-info" onclick="modalData(@prj.Id); dataPreview(@prj.Id);" data-bs-toggle="modal" data-bs-target="#editProjectModal">Edit</a>
-                                <a href="#" id="deleteDeveloper" class="btn icon icon-left btn-danger" onclick="modalData(@prj.Id)" data-bs-toggle="modal" data-bs-target="#deleteQuestion">Delete</a>
+                                <a href="#" id="deleteDeveloper" class="btn icon icon-left btn-danger" onclick="modalData(@prj.Id); confirmInfo();" data-bs-toggle="modal" data-bs-target="#deleteQuestion">Delete</a>
                             </td>
                         </tr>
                     }
@@ -66,11 +66,11 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-light-secondary" data-bs-dismiss="modal">
                     <i class="bx bx-x d-block d-sm-none"></i>
-                    <span class="d-none d-sm-block">Close</span>
+                    <span class="d-none d-sm-block">Cancel</span>
                 </button>
                 <button id="newPrjSubmit" type="button" class="btn btn-primary ml-1" data-bs-dismiss="modal">
                     <i class="bx bx-check d-block d-sm-none"></i>
-                    <span class="d-none d-sm-block">Accept</span>
+                    <span class="d-none d-sm-block">Create</span>
                 </button>
             </div>
         </div>
@@ -100,11 +100,11 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-light-secondary" data-bs-dismiss="modal">
                     <i class="bx bx-x d-block d-sm-none"></i>
-                    <span class="d-none d-sm-block">Close</span>
+                    <span class="d-none d-sm-block">Cancel</span>
                 </button>
                 <button id="editPrjSubmit" onclick="editPrj();" type="button" class="btn btn-primary ml-1" data-bs-dismiss="modal">
                     <i class="bx bx-check d-block d-sm-none"></i>
-                    <span class="d-none d-sm-block">Accept</span>
+                    <span class="d-none d-sm-block">Edit</span>
                 </button>
             </div>
         </div>
@@ -124,16 +124,16 @@
                 </button>
             </div>
             <div class="modal-body">
-                Delete project?
+                You are about to delete project <h6 id="pNameConfirm"></h6>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-light-secondary" data-bs-dismiss="modal" id="cancelDelete">
                     <i class="bx bx-x d-block d-sm-none"></i>
-                    <span class="d-none d-sm-block">Close</span>
+                    <span class="d-none d-sm-block">Cancel</span>
                 </button>
                 <button type="button" class="btn btn-danger ml-1" id="confirmDelete" onclick="delPrj()">
                     <i class="bx bx-check d-block d-sm-none"></i>
-                    <span class="d-none d-sm-block">Accept</span>
+                    <span class="d-none d-sm-block">Delete</span>
                 </button>
             </div>
         </div>
@@ -169,6 +169,9 @@
         function modalData(id) {
             Id = id;
         }
+        function confirmInfo() {
+            document.getElementById("pNameConfirm").innerHTML = document.getElementById("prjName-" + Id).innerHTML;
+        }
         function delPrj() {
             var link = '@Url.Action("AjaxDeletePrj", "Projects")';
             link = link + "?id=" + Id;
@@ -192,7 +195,7 @@
             var link = '@Url.Action("AjaxPrjEdit", "Projects")';
             var pName = document.getElementById("editProjectName").value;
             var pDesc = document.getElementById("editProjectDescription").innerHTML;
-            var Devs = [1, 8];
+            var Devs = [10, 11];
 
             var data = {
                 PId: Id,

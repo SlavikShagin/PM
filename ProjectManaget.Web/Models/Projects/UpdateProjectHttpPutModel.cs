@@ -9,9 +9,7 @@ namespace ProjectManager.Web.Models.Projects
         public int Id { get; set; }
         public string Name { get; set; }
         public string ProjectSubject { get; set; }
-#nullable enable
-        public ICollection<DeveloperEntity>? Developers { get; set; }
-#nullable disable
+        public ICollection<DeveloperEntity> Developers { get; set; }
 
         public class UpdateProjectHttpPutModelValidator : AbstractValidator<UpdateProjectHttpPutModel>
         {

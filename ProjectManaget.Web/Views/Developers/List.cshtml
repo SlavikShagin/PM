@@ -28,14 +28,14 @@
                     @foreach (var dev in Model.DevelopersList)
                     {
                         <tr>
-                            <td>@dev.FirstName</td>
-                            <td>@dev.LastName</td>
-                            <td>@dev.EMail</td>
-                            <td>@dev.Phone</td>
-                            <td>ProjectsModal</td>
+                            <td id="devFName-@dev.Id">@dev.FirstName</td>
+                            <td id="devLName-@dev.Id">@dev.LastName</td>
+                            <td id="devEMail-@dev.Id">@dev.EMail</td>
+                            <td id="devPhone-@dev.Id">@dev.Phone</td>
+                            <td>ProjectsListOnHover</td>
                             <td>
-                                <button class="btn icon icon-left btn-info">Details</button>
-                                <button id="deleteDeveloper" class="btn icon icon-left btn-danger" onclick="modalData(@dev.Id)" data-bs-toggle="modal" data-bs-target="#deleteQuestion">Delete</button>
+                                <button id="editDeveloper" class="btn icon icon-left btn-info" onclick="modalData(@dev.Id); dataPreview(@dev.Id)" data-bs-toggle="modal" data-bs-target="#editDeveloperModal">Edit</button>
+                                <button id="deleteDeveloper" class="btn icon icon-left btn-danger" onclick="modalData(@dev.Id); confirmInfo();" data-bs-toggle="modal" data-bs-target="#deleteQuestion">Delete</button>
                             </td>
                         </tr>
                     }
@@ -50,7 +50,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="CreateModalTitle">
-                    Add Developer
+                    Create Developer
                 </h5>
                 <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                     <i data-feather="x"></i>
@@ -73,11 +73,51 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-light-secondary" data-bs-dismiss="modal">
                     <i class="bx bx-x d-block d-sm-none"></i>
-                    <span class="d-none d-sm-block">Close</span>
+                    <span class="d-none d-sm-block">Cancel</span>
                 </button>
                 <button id="newDevSubmit" type="button" class="btn btn-primary ml-1" data-bs-dismiss="modal">
                     <i class="bx bx-check d-block d-sm-none"></i>
-                    <span class="d-none d-sm-block">Accept</span>
+                    <span class="d-none d-sm-block">Create</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*Edit entry modal*@
+<div class="modal fade" id="editDeveloperModal" tabindex="-1" aria-labelledby="EditModalTitle" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-centered modal-dialog-scrollable" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="EditModalTitle">
+                    Edit Developer
+                </h5>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <i data-feather="x"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <input id="editFirstName" type="text" placeholder="First Name" class="form-control">
+                </div>
+                <div class="form-group">
+                    <input id="editLastName" type="text" placeholder="Last Name" class="form-control">
+                </div>
+                <div class="form-group">
+                    <input id="editEmail" type="text" placeholder="E-Mail" class="form-control">
+                </div>
+                <div class="form-group">
+                    <input id="editPhone" type="text" placeholder="Phone" class="form-control">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light-secondary" data-bs-dismiss="modal">
+                    <i class="bx bx-x d-block d-sm-none"></i>
+                    <span class="d-none d-sm-block">Cancel</span>
+                </button>
+                <button id="editDevSubmit" type="button" class="btn btn-primary ml-1" data-bs-dismiss="modal">
+                    <i class="bx bx-check d-block d-sm-none"></i>
+                    <span class="d-none d-sm-block">Edit</span>
                 </button>
             </div>
         </div>
@@ -97,16 +137,16 @@
                 </button>
             </div>
             <div class="modal-body">
-                Delete developer?
+                You are about to delete developer <h6 id="fullNameConfirm"></h6>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-light-secondary" data-bs-dismiss="modal" id="cancelDelete">
                     <i class="bx bx-x d-block d-sm-none"></i>
-                    <span class="d-none d-sm-block">Close</span>
+                    <span class="d-none d-sm-block">Cancel</span>
                 </button>
                 <button type="button" class="btn btn-danger ml-1" id="confirmDelete" onclick="delDev()">
                     <i class="bx bx-check d-block d-sm-none"></i>
-                    <span class="d-none d-sm-block">Accept</span>
+                    <span class="d-none d-sm-block">Delete</span>
                 </button>
             </div>
         </div>
@@ -141,10 +181,39 @@
                     }
                 });
             });
+
+            $("#editDevSubmit").click(function (e) {
+                var firstName = $('#editFirstName').val();
+                var lastName = $('#editLastName').val();
+                var eMail = $('#editEmail').val();
+                var phone = $('#editPhone').val();
+
+                var data = {
+                    Id: Id,
+                    FirstName: firstName,
+                    LastName: lastName,
+                    Email: eMail,
+                    Phone: phone,
+                }
+                var jsonData = JSON.stringify(data);
+                $.ajax({
+                    type: "PUT",
+                    url: '@Url.Action("AjaxDevEdit", "Developers")',
+                    dataType: 'json',
+                    contentType: 'application/json',
+                    data: jsonData,
+                    success: function () {
+                        location.reload();
+                    }
+                });
+            });
         });
         var Id;
         function modalData(id) {
             Id = id;
+        }
+        function confirmInfo() {
+            document.getElementById("fullNameConfirm").innerHTML = document.getElementById("devFName-" + Id).innerHTML + " " + document.getElementById("devLName-" + Id).innerHTML;
         }
         function delDev() {
             var link = '@Url.Action("AjaxDeleteDev", "Developers")';
@@ -157,5 +226,17 @@
             });
             setTimeout(location.reload.bind(location), 300);
         }
+
+        function dataPreview(id) {
+            var devFName = "devFName-" + id;
+            var devLName = "devLName-" + id;
+            var devEMail = "devEMail-" + id;
+            var devPhone = "devPhone-" + id;
+            document.getElementById("editFirstName").value = document.getElementById(devFName).innerHTML;
+            document.getElementById("editLastName").value = document.getElementById(devLName).innerHTML;
+            document.getElementById("editEmail").value = document.getElementById(devEMail).innerHTML;
+            document.getElementById("editPhone").value = document.getElementById(devPhone).innerHTML;
+        }
+
     </script>
 }
