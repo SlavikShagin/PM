@@ -28,10 +28,17 @@
                         <tr>
                             <td id="prjName-@prj.Id">@prj.Name</td>
                             <td id="prjDesc-@prj.Id">@prj.ProjectSubject</td>
-                            <td id="prjDevs-@prj.Id">devs dropdown (modal)</td>
+                            <td id="prjDevs-@prj.Id">
+                                <button type="button" onclick="" class="btn btn-primary btn-sm dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    List of Developers
+                                </button>
+                                <div class="dropdown-menu" id="devListOptions" style="margin: 0px;">
+                                    <p class="dropdown-item">ToDo</p>
+                                </div>
+                            </td>
                             <td>
-                                <a href="#" class="btn icon icon-left btn-info" onclick="modalData(@prj.Id); dataPreview(@prj.Id);" data-bs-toggle="modal" data-bs-target="#editProjectModal">Edit</a>
-                                <a href="#" id="deleteDeveloper" class="btn icon icon-left btn-danger" onclick="modalData(@prj.Id); confirmInfo();" data-bs-toggle="modal" data-bs-target="#deleteQuestion">Delete</a>
+                                <a href="#" class="btn icon icon-left btn-info" style="width: 100%; margin: 1px" onclick="modalData(@prj.Id); dataPreview(@prj.Id);" data-bs-toggle="modal" data-bs-target="#editProjectModal">Edit</a>
+                                <a href="#" id="deleteDeveloper" class="btn icon icon-left btn-danger" style="width: 100%; margin: 1px" onclick="modalData(@prj.Id); confirmInfo();" data-bs-toggle="modal" data-bs-target="#deleteQuestion">Delete</a>
                             </td>
                         </tr>
                     }

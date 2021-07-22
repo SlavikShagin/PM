@@ -33,11 +33,11 @@
                             <td id="devEMail-@dev.Id">@dev.EMail</td>
                             <td id="devPhone-@dev.Id">@dev.Phone</td>
                             <td>
-                                <button type="button" onclick="prjListShow()" class="btn btn-primary btn-sm dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <button type="button" onclick="" class="btn btn-primary btn-sm dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     List of projects
                                 </button>
                                 <div class="dropdown-menu" id="prjListOptions" style="margin: 0px;">
-                                    <p class="dropdown-item">Option 1</p>
+                                    <p class="dropdown-item">ToDo</p>
                                 </div>
                             </td>
                             <td>
@@ -57,7 +57,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="CreateModalTitle">
-                    Create Developer
+                    Add Developer
                 </h5>
                 <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                     <i data-feather="x"></i>
@@ -84,7 +84,7 @@
                 </button>
                 <button id="newDevSubmit" type="button" class="btn btn-primary ml-1" data-bs-dismiss="modal">
                     <i class="bx bx-check d-block d-sm-none"></i>
-                    <span class="d-none d-sm-block">Create</span>
+                    <span class="d-none d-sm-block">Confirm</span>
                 </button>
             </div>
         </div>
@@ -242,20 +242,5 @@
             document.getElementById("editEmail").value = document.getElementById(devEMail).innerHTML;
             document.getElementById("editPhone").value = document.getElementById(devPhone).innerHTML;
         }
-        function prjListShow(){
-            $.ajax({
-                type: "GET",
-                url: '@Url.Action("AjaxGetAllProjects", "Projects")',
-                dataType: 'json',
-                contentType: 'application/json',
-                success: function (returnedData) {
-                    var data = returnedData.d;
-                    for (var item in data) {
-                        console.log(JSON.stringify(data[i]));
-                        $("#prjListOptions").append('<p class="dropdown-item">' + data[item].Name + '</p>')
-                    }
-                },
-            });
-            }
     </script>
 }

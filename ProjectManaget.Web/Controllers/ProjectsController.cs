@@ -40,14 +40,6 @@ namespace ProjectManager.Web.Controllers
             return View(vm);
         }
 
-        [HttpGet]
-        public async Task<IActionResult> AjaxGetAllProjects([FromQuery] int? id)
-        {
-            var getAllProjects = await _projectService.GetAll();
-
-            return View(getAllProjects);
-        }
-
         [HttpPost]
         public async Task<IActionResult> AjaxPrjPost([FromBody] CreateProjectHttpPostModel vm)
         {
