@@ -1,0 +1,219 @@
+﻿@using ProjectManager.Web.Models.Projects;
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = "Projects";
+}
+@model AllProjectsDetailsHttpGetModel
+<section class="section">
+    <div class="card">
+        <div class="card-header">
+            Projects control panel
+            <button type="button" class="btn btn-outline-primary block" data-bs-toggle="modal" data-bs-target="#addProjectModal">
+                Add Project
+            </button>
+        </div>
+        <div class="card-body">
+            <table class="table table-striped" id="table1">
+                <thead>
+                    <tr>
+                        <th>Project Name</th>
+                        <th>Description</th>
+                        <th>Involved Developers</th>
+                        <th>Controls</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var prj in Model.ProjectsList)
+                    {
+                        <tr>
+                            <td id="prjName-@prj.Id">@prj.Name</td>
+                            <td id="prjDesc-@prj.Id">@prj.ProjectSubject</td>
+                            <td id="prjDevs-@prj.Id">devs dropdown (modal)</td>
+                            <td>
+                                <a href="#" class="btn icon icon-left btn-info" onclick="modalData(@prj.Id); dataPreview(@prj.Id);" data-bs-toggle="modal" data-bs-target="#editProjectModal">Edit</a>
+                                <a href="#" id="deleteDeveloper" class="btn icon icon-left btn-danger" onclick="modalData(@prj.Id)" data-bs-toggle="modal" data-bs-target="#deleteQuestion">Delete</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+
+</section>
+
+@*Create entry modal*@
+<div class="modal fade" id="addProjectModal" tabindex="-1" aria-labelledby="AddModalTitle" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-centered modal-dialog-scrollable" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="AddModalTitle">
+                    Add Project
+                </h5>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <i data-feather="x"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <input id="inputProjectName" type="text" placeholder="Project name" class="form-control">
+                </div>
+                <div class="form-group">
+                    <textarea class="form-control" id="inputProjectDescription" rows="3" placeholder="Input project description"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light-secondary" data-bs-dismiss="modal">
+                    <i class="bx bx-x d-block d-sm-none"></i>
+                    <span class="d-none d-sm-block">Close</span>
+                </button>
+                <button id="newPrjSubmit" type="button" class="btn btn-primary ml-1" data-bs-dismiss="modal">
+                    <i class="bx bx-check d-block d-sm-none"></i>
+                    <span class="d-none d-sm-block">Accept</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*Edit project modal*@
+<div class="modal fade" id="editProjectModal" tabindex="-1" aria-labelledby="editModalTitle" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-centered modal-dialog-scrollable" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editModalTitle">
+                    Edit Project
+                </h5>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <i data-feather="x"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <input id="editProjectName" type="text" class="form-control">
+                </div>
+                <div class="form-group">
+                    <textarea class="form-control" id="editProjectDescription" rows="3"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light-secondary" data-bs-dismiss="modal">
+                    <i class="bx bx-x d-block d-sm-none"></i>
+                    <span class="d-none d-sm-block">Close</span>
+                </button>
+                <button id="editPrjSubmit" onclick="editPrj();" type="button" class="btn btn-primary ml-1" data-bs-dismiss="modal">
+                    <i class="bx bx-check d-block d-sm-none"></i>
+                    <span class="d-none d-sm-block">Accept</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*DeleteEntryModal*@
+<div class="modal fade text-left" id="deleteQuestion" tabindex="-1" aria-labelledby="deletionModalHeader" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-danger">
+                <h5 class="modal-title white" id="deletionModalHeader">
+                    Are you sure?
+                </h5>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <i data-feather="x"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                Delete project?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light-secondary" data-bs-dismiss="modal" id="cancelDelete">
+                    <i class="bx bx-x d-block d-sm-none"></i>
+                    <span class="d-none d-sm-block">Close</span>
+                </button>
+                <button type="button" class="btn btn-danger ml-1" id="confirmDelete" onclick="delPrj()">
+                    <i class="bx bx-check d-block d-sm-none"></i>
+                    <span class="d-none d-sm-block">Accept</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#newPrjSubmit").click(function (e) {
+                var prjName = $('#inputProjectName').val();
+                var prjDesc = $('#inputProjectDescription').val();
+
+                var data = {
+                    Name: prjName,
+                    ProjectSubject: prjDesc,
+                }
+                var jsonData = JSON.stringify(data);
+
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("AjaxPrjPost", "Projects")',
+                    dataType: 'json',
+                    contentType: 'application/json',
+                    data: jsonData,
+                    success: function () {
+                        location.reload();
+                    }
+                });
+            });
+        });
+        var Id;
+        function modalData(id) {
+            Id = id;
+        }
+        function delPrj() {
+            var link = '@Url.Action("AjaxDeletePrj", "Projects")';
+            link = link + "?id=" + Id;
+            $.ajax({
+                url: link,
+                dataType: "json",
+                type: "DELETE",
+                contentType: 'application/json'
+            });
+            setTimeout(location.reload.bind(location), 300);
+        }
+
+        function dataPreview(id) {
+            var pnId = "prjName-" + id; 
+            var pdId = "prjDesc-" + id;
+            document.getElementById("editProjectName").value = document.getElementById(pnId).innerHTML;
+            document.getElementById("editProjectDescription").innerHTML = document.getElementById(pdId).innerHTML;
+        }
+
+        function editPrj() {
+            var link = '@Url.Action("AjaxPrjEdit", "Projects")';
+            var pName = document.getElementById("editProjectName").value;
+            var pDesc = document.getElementById("editProjectDescription").innerHTML;
+            var Devs = [1, 8];
+
+            var data = {
+                PId: Id,
+                Name: pName,
+                ProjectSubject: pDesc,
+                Developers: Devs,
+            }
+            var jsonData = JSON.stringify(data);
+
+            console.log(jsonData);
+
+            $.ajax({
+                url: link,
+                dataType: "json",
+                type: "PUT",
+                contentType: 'application/json',
+                data: jsonData,
+                success: function () {
+                    location.reload();
+                }
+            });
+        }
+    </script>
+}

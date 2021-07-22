@@ -1,0 +1,161 @@
+﻿@using ProjectManager.Web.Models.Developers;
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = "Developers";
+}
+@model AllDevelopersDetailsHttpGetModel
+<section class="section">
+    <div class="card">
+        <div class="card-header">
+            Developers control panel
+            <button type="button" class="btn btn-outline-primary block" data-bs-toggle="modal" data-bs-target="#addDeveloperModal">
+                Add Developer
+            </button>
+        </div>
+        <div class="card-body">
+            <table class="table table-striped" id="listDevelopers">
+                <thead>
+                    <tr>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>E-Mail</th>
+                        <th>Phone</th>
+                        <th>In Projects</th>
+                        <th>Controls</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var dev in Model.DevelopersList)
+                    {
+                        <tr>
+                            <td>@dev.FirstName</td>
+                            <td>@dev.LastName</td>
+                            <td>@dev.EMail</td>
+                            <td>@dev.Phone</td>
+                            <td>ProjectsModal</td>
+                            <td>
+                                <button class="btn icon icon-left btn-info">Details</button>
+                                <button id="deleteDeveloper" class="btn icon icon-left btn-danger" onclick="modalData(@dev.Id)" data-bs-toggle="modal" data-bs-target="#deleteQuestion">Delete</button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
+@*Create entry modal*@
+<div class="modal fade" id="addDeveloperModal" tabindex="-1" aria-labelledby="CreateModalTitle" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-centered modal-dialog-scrollable" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="CreateModalTitle">
+                    Add Developer
+                </h5>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <i data-feather="x"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <input id="inputFirstName" type="text" placeholder="First Name" class="form-control">
+                </div>
+                <div class="form-group">
+                    <input id="inputLastName" type="text" placeholder="Last Name" class="form-control">
+                </div>
+                <div class="form-group">
+                    <input id="inputEmail" type="text" placeholder="E-Mail" class="form-control">
+                </div>
+                <div class="form-group">
+                    <input id="inputPhone" type="text" placeholder="Phone" class="form-control">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light-secondary" data-bs-dismiss="modal">
+                    <i class="bx bx-x d-block d-sm-none"></i>
+                    <span class="d-none d-sm-block">Close</span>
+                </button>
+                <button id="newDevSubmit" type="button" class="btn btn-primary ml-1" data-bs-dismiss="modal">
+                    <i class="bx bx-check d-block d-sm-none"></i>
+                    <span class="d-none d-sm-block">Accept</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*DeleteEntryModal*@
+<div class="modal fade text-left" id="deleteQuestion" tabindex="-1" aria-labelledby="deletionModalHeader" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-danger">
+                <h5 class="modal-title white" id="deletionModalHeader">
+                    Are you sure?
+                </h5>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <i data-feather="x"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                Delete developer?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light-secondary" data-bs-dismiss="modal" id="cancelDelete">
+                    <i class="bx bx-x d-block d-sm-none"></i>
+                    <span class="d-none d-sm-block">Close</span>
+                </button>
+                <button type="button" class="btn btn-danger ml-1" id="confirmDelete" onclick="delDev()">
+                    <i class="bx bx-check d-block d-sm-none"></i>
+                    <span class="d-none d-sm-block">Accept</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#newDevSubmit").click(function (e) {
+                var firstName = $('#inputFirstName').val();
+                var lastName = $('#inputLastName').val();
+                var eMail = $('#inputEmail').val();
+                var phone = $('#inputPhone').val();
+
+                var data = {
+                    FirstName: firstName,
+                    LastName: lastName,
+                    Email: eMail,
+                    Phone: phone,
+                }
+                var jsonData = JSON.stringify(data);
+
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("AjaxDevPost", "Developers")',
+                    dataType: 'json',
+                    contentType: 'application/json',
+                    data: jsonData,
+                    success: function () {
+                        location.reload();
+                    }
+                });
+            });
+        });
+        var Id;
+        function modalData(id) {
+            Id = id;
+        }
+        function delDev() {
+            var link = '@Url.Action("AjaxDeleteDev", "Developers")';
+            link = link + "?id=" + Id;
+            $.ajax({
+                url: link,
+                dataType: "json",
+                type: "DELETE",
+                contentType: 'application/json'
+            });
+            setTimeout(location.reload.bind(location), 300);
+        }
+    </script>
+}
