@@ -32,7 +32,14 @@
                             <td id="devLName-@dev.Id">@dev.LastName</td>
                             <td id="devEMail-@dev.Id">@dev.EMail</td>
                             <td id="devPhone-@dev.Id">@dev.Phone</td>
-                            <td>ProjectsListOnHover</td>
+                            <td>
+                                <button type="button" onclick="prjListShow()" class="btn btn-primary btn-sm dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    List of projects
+                                </button>
+                                <div class="dropdown-menu" style="margin: 0px;">
+                                    <p class="dropdown-item">Option 1</p>
+                                </div>
+                            </td>
                             <td>
                                 <button id="editDeveloper" class="btn icon icon-left btn-info" onclick="modalData(@dev.Id); dataPreview(@dev.Id)" data-bs-toggle="modal" data-bs-target="#editDeveloperModal">Edit</button>
                                 <button id="deleteDeveloper" class="btn icon icon-left btn-danger" onclick="modalData(@dev.Id); confirmInfo();" data-bs-toggle="modal" data-bs-target="#deleteQuestion">Delete</button>
@@ -181,7 +188,6 @@
                     }
                 });
             });
-
             $("#editDevSubmit").click(function (e) {
                 var firstName = $('#editFirstName').val();
                 var lastName = $('#editLastName').val();
@@ -226,7 +232,6 @@
             });
             setTimeout(location.reload.bind(location), 300);
         }
-
         function dataPreview(id) {
             var devFName = "devFName-" + id;
             var devLName = "devLName-" + id;
@@ -237,5 +242,14 @@
             document.getElementById("editEmail").value = document.getElementById(devEMail).innerHTML;
             document.getElementById("editPhone").value = document.getElementById(devPhone).innerHTML;
         }
+        function prjListShow(){
+            $.ajax({
+                type: "GET",
+                url: '@Url.Action("ListAsync", "Projects")',
+                dataType: 'json',
+                contentType: 'application/json',
+                data: "",
+            });
+            }
     </script>
 }
