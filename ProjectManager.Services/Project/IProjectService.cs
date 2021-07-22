@@ -10,6 +10,6 @@ namespace ProjectManager.Services.Project
         Task<List<ProjectEntity>> GetAll();
         Task Add(string name, string projectsubject);
         Task<ProjectEntity> DeleteProject(int projectId);
-        Task<ProjectEntity> UpdateProject(int id, string name, string projectsubject, ICollection<DeveloperEntity> developers);
+        Task<ProjectEntity> UpdateProject(int id, string name, string projectsubject);
     }
 }

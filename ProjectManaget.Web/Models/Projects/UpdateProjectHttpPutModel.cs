@@ -9,7 +9,6 @@ namespace ProjectManager.Web.Models.Projects
         public int Id { get; set; }
         public string Name { get; set; }
         public string ProjectSubject { get; set; }
-        public ICollection<DeveloperEntity> Developers { get; set; }
 
         public class UpdateProjectHttpPutModelValidator : AbstractValidator<UpdateProjectHttpPutModel>
         {

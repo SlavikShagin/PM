@@ -36,7 +36,7 @@
                                 <button type="button" onclick="prjListShow()" class="btn btn-primary btn-sm dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     List of projects
                                 </button>
-                                <div class="dropdown-menu" style="margin: 0px;">
+                                <div class="dropdown-menu" id="prjListOptions" style="margin: 0px;">
                                     <p class="dropdown-item">Option 1</p>
                                 </div>
                             </td>
@@ -245,10 +245,16 @@
         function prjListShow(){
             $.ajax({
                 type: "GET",
-                url: '@Url.Action("ListAsync", "Projects")',
+                url: '@Url.Action("AjaxGetAllProjects", "Projects")',
                 dataType: 'json',
                 contentType: 'application/json',
-                data: "",
+                success: function (returnedData) {
+                    var data = returnedData.d;
+                    for (var item in data) {
+                        console.log(JSON.stringify(data[i]));
+                        $("#prjListOptions").append('<p class="dropdown-item">' + data[item].Name + '</p>')
+                    }
+                },
             });
             }
     </script>

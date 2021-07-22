@@ -48,14 +48,13 @@ namespace ProjectManager.Services.Project
             return entity; /*TODO fix*/
         }
 
-        public async Task<ProjectEntity> UpdateProject(int id, string name, string projectsubject, ICollection<DeveloperEntity> developers)
+        public async Task<ProjectEntity> UpdateProject(int id, string name, string projectsubject)
         {
             ProjectEntity updatedData = new ProjectEntity()
             {
                 Id = id,
                 Name = name,
                 ProjectSubject = projectsubject,
-                Developers = developers,
             };
 
             _repository.Update(updatedData);

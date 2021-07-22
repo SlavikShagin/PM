@@ -28,7 +28,7 @@ namespace ProjectManager.Web.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> ListAsync()
+        public async Task<IActionResult> List()
         {
             var getAllProjects = await _projectService.GetAll();
 
@@ -38,6 +38,14 @@ namespace ProjectManager.Web.Controllers
             };
 
             return View(vm);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> AjaxGetAllProjects([FromQuery] int? id)
+        {
+            var getAllProjects = await _projectService.GetAll();
+
+            return View(getAllProjects);
         }
 
         [HttpPost]
@@ -90,7 +98,7 @@ namespace ProjectManager.Web.Controllers
                 return BadRequest(errorResponse);
             }
 
-            await _projectService.UpdateProject(vm.Id, vm.Name, vm.ProjectSubject, vm.Developers);
+            await _projectService.UpdateProject(vm.Id, vm.Name, vm.ProjectSubject);
 
             return Ok();
         }
