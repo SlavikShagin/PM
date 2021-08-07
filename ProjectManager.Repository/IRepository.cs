@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using ProjectManager.Database;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace ProjectManager.Repository
@@ -13,5 +14,6 @@ namespace ProjectManager.Repository
         void Remove(T entity);
         void RemoveRange(IEnumerable<T> entities);
         void SaveChanges();
+        string FindEMail(string eMail);
     }
 }

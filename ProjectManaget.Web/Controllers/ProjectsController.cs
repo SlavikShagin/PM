@@ -32,7 +32,7 @@ namespace ProjectManager.Web.Controllers
         {
             var getAllProjects = await _projectService.GetAll();
 
-            AllProjectsDetailsHttpGetModel vm = new AllProjectsDetailsHttpGetModel()
+            var vm = new AllProjectsDetailsHttpGetModel()
             {
                 ProjectsList = getAllProjects,
             };
@@ -66,7 +66,7 @@ namespace ProjectManager.Web.Controllers
         {
             var currentPrj = await _projectService.GetById(projectId);
 
-            ProjectsDetailsHttpGetModel vm = new ProjectsDetailsHttpGetModel()
+            var vm = new ProjectsDetailsHttpGetModel()
             {
                 Project = currentPrj,
             };
@@ -104,5 +104,15 @@ namespace ProjectManager.Web.Controllers
             return Ok();
         }
 
+        [HttpPost]
+        public async Task AjaxAddLink()
+        {
+
+        }
+        [HttpDelete]
+        public async Task AjaxRemoveLink()
+        {
+
+        }
     }
 }

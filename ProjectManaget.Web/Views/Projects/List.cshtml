@@ -29,16 +29,16 @@
                             <td id="prjName-@prj.Id">@prj.Name</td>
                             <td id="prjDesc-@prj.Id">@prj.ProjectSubject</td>
                             <td id="prjDevs-@prj.Id">
-                                <button type="button" onclick="" class="btn btn-primary btn-sm dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <button type="button" id="listOfDevs" data-project="@prj.Id" class="btn btn-primary btn-sm dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     List of Developers
                                 </button>
-                                <div class="dropdown-menu" id="devListOptions" style="margin: 0px;">
+                                <div class="dropdown-menu" id="devListOptions-@prj.Id" style="margin: 0px;">
                                     <p class="dropdown-item">ToDo</p>
                                 </div>
                             </td>
                             <td>
-                                <a href="#" class="btn icon icon-left btn-info" style="width: 100%; margin: 1px" onclick="modalData(@prj.Id); dataPreview(@prj.Id);" data-bs-toggle="modal" data-bs-target="#editProjectModal">Edit</a>
-                                <a href="#" id="deleteDeveloper" class="btn icon icon-left btn-danger" style="width: 100%; margin: 1px" onclick="modalData(@prj.Id); confirmInfo();" data-bs-toggle="modal" data-bs-target="#deleteQuestion">Delete</a>
+                                <a href="#" id="editProject" class="btn icon icon-left btn-info" style="width: 100%; margin: 1px" data-project="@prj.Id" data-bs-toggle="modal" data-bs-target="#editProjectModal">Edit</a>
+                                <a href="#" id="deleteProject" class="btn icon icon-left btn-danger" style="width: 100%; margin: 1px" data-project="@prj.Id" data-bs-toggle="modal" data-bs-target="#deleteQuestion">Delete</a>
                             </td>
                         </tr>
                     }
@@ -138,7 +138,7 @@
                     <i class="bx bx-x d-block d-sm-none"></i>
                     <span class="d-none d-sm-block">Cancel</span>
                 </button>
-                <button type="button" class="btn btn-danger ml-1" id="confirmDelete" onclick="delPrj()">
+                <button type="button" class="btn btn-danger ml-1" id="confirmDelete">
                     <i class="bx bx-check d-block d-sm-none"></i>
                     <span class="d-none d-sm-block">Delete</span>
                 </button>
@@ -148,81 +148,5 @@
 </div>
 
 @section Scripts{
-    <script type="text/javascript">
-        $(document).ready(function () {
-            $("#newPrjSubmit").click(function (e) {
-                var prjName = $('#inputProjectName').val();
-                var prjDesc = $('#inputProjectDescription').val();
-
-                var data = {
-                    Name: prjName,
-                    ProjectSubject: prjDesc,
-                }
-                var jsonData = JSON.stringify(data);
-
-                $.ajax({
-                    type: "POST",
-                    url: '@Url.Action("AjaxPrjPost", "Projects")',
-                    dataType: 'json',
-                    contentType: 'application/json',
-                    data: jsonData,
-                    success: function () {
-                        location.reload();
-                    }
-                });
-            });
-            $("#editPrjSubmit").click(function (e) {
-                var link = '@Url.Action("AjaxPrjEdit", "Projects")';
-                var pName = document.getElementById("editProjectName").value;
-                var pDesc = document.getElementById("editProjectDescription").value;
-                var Devs = [11, 12];
-
-                var data = {
-                    Id: Id,
-                    Name: pName,
-                    ProjectSubject: pDesc,
-                    Developers: Devs,
-                }
-                var jsonData = JSON.stringify(data);
-
-                $.ajax({
-                    type: "PUT",
-                    url: '@Url.Action("AjaxPrjEdit", "Projects")',
-                    dataType: 'json',
-                    contentType: 'application/json',
-                    data: jsonData,
-                    traditional: true,
-                    success: function () {
-                        location.reload();
-                    }
-                });
-                setTimeout(location.reload.bind(location), 300);
-            });
-        });
-        var Id;
-        function modalData(id) {
-            Id = id;
-        }
-        function confirmInfo() {
-            document.getElementById("pNameConfirm").innerHTML = document.getElementById("prjName-" + Id).innerHTML;
-        }
-        function delPrj() {
-            var link = '@Url.Action("AjaxDeletePrj", "Projects")';
-            link = link + "?id=" + Id;
-            $.ajax({
-                url: link,
-                dataType: "json",
-                type: "DELETE",
-                contentType: 'application/json'
-            });
-            setTimeout(location.reload.bind(location), 300);
-        }
-
-        function dataPreview(id) {
-            var pnId = "prjName-" + id;
-            var pdId = "prjDesc-" + id;
-            document.getElementById("editProjectName").value = document.getElementById(pnId).innerHTML;
-            document.getElementById("editProjectDescription").innerHTML = document.getElementById(pdId).innerHTML;
-        }
-    </script>
+    <script type="text/javascript" src="~/js/projects-list.js"></script>
 }

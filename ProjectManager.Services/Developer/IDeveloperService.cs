@@ -11,5 +11,6 @@ namespace ProjectManager.Services.Developer
         Task Add(string firstName, string lastName, string eMail, string phone);
         Task<DeveloperEntity> DeleteEntry(int developerId);
         Task<DeveloperEntity> EditEntry(int developerId, string firstName, string lastName, string eMail, string phone);
+        string CheckIfEmailExists(string eMail);
     }
 }

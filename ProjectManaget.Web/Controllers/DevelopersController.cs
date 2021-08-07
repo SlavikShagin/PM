@@ -27,12 +27,19 @@ namespace ProjectManager.Web.Controllers
         {
             var getAllDev = await _developerService.GetAll();
 
-            AllDevelopersDetailsHttpGetModel vm = new AllDevelopersDetailsHttpGetModel()
+            var vm = new AllDevelopersDetailsHttpGetModel()
             {
                 DevelopersList = getAllDev,
             };
 
             return View(vm);
+        }
+
+        [HttpGet]
+        public async Task<JsonResult> AjaxDevelopersList()
+        {
+            var getAllDev = await _developerService.GetAll();
+            return Json(getAllDev);
         }
 
         [HttpPost]
@@ -50,10 +57,23 @@ namespace ProjectManager.Web.Controllers
 
                 return BadRequest(errorResponse);
             }
+            //check if email exists
+            var checkEmail = _developerService.CheckIfEmailExists(vm.EMail);
 
-            await _developerService.Add(vm.FirstName, vm.LastName, vm.EMail, vm.Phone);
+            if (checkEmail == "")
+            {
+                await _developerService.Add(vm.FirstName, vm.LastName, vm.EMail, vm.Phone);
 
-            return Json(new { success = true });
+                return Json(new { success = true });
+            }
+            else if (checkEmail == vm.EMail)
+            {
+                return Conflict("E-Mail already exists");
+            }
+            else
+            {
+                return Ok();
+            }
         }
 
         [HttpDelete]
@@ -66,7 +86,7 @@ namespace ProjectManager.Web.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> AjaxDevEdit([FromBody] UpdateDeveloperHttpPutModel vm)
+        public async Task<IActionResult> AjaxDevEdit([FromForm] UpdateDeveloperHttpPutModel vm)
         {
             var validationResult = _validatorEditDeveloperModel.Validate(vm);
 

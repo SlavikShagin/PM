@@ -33,7 +33,7 @@
                             <td id="devEMail-@dev.Id">@dev.EMail</td>
                             <td id="devPhone-@dev.Id">@dev.Phone</td>
                             <td>
-                                <button type="button" onclick="" class="btn btn-primary btn-sm dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     List of projects
                                 </button>
                                 <div class="dropdown-menu" id="prjListOptions" style="margin: 0px;">
@@ -41,8 +41,8 @@
                                 </div>
                             </td>
                             <td>
-                                <button id="editDeveloper" class="btn icon icon-left btn-info" onclick="modalData(@dev.Id); dataPreview(@dev.Id)" data-bs-toggle="modal" data-bs-target="#editDeveloperModal">Edit</button>
-                                <button id="deleteDeveloper" class="btn icon icon-left btn-danger" onclick="modalData(@dev.Id); confirmInfo();" data-bs-toggle="modal" data-bs-target="#deleteQuestion">Delete</button>
+                                <button id="editDeveloper" class="btn icon icon-left btn-info" data-developer="@dev.Id" data-bs-toggle="modal" data-bs-target="#editDeveloperModal">Edit</button>
+                                <button id="deleteDeveloper" class="btn icon icon-left btn-danger" data-developer="@dev.Id" data-bs-toggle="modal" data-bs-target="#deleteQuestion">Delete</button>
                             </td>
                         </tr>
                     }
@@ -105,7 +105,7 @@
             </div>
             <div class="modal-body">
                 <div class="form-group">
-                    <input id="editFirstName" type="text" placeholder="First Name" class="form-control">
+                    <input id="editFirstName" data-edit-id="0" type="text" placeholder="First Name" class="form-control">
                 </div>
                 <div class="form-group">
                     <input id="editLastName" type="text" placeholder="Last Name" class="form-control">
@@ -152,7 +152,7 @@
                     <i class="bx bx-x d-block d-sm-none"></i>
                     <span class="d-none d-sm-block">Cancel</span>
                 </button>
-                <button type="button" class="btn btn-danger ml-1" id="confirmDelete" onclick="delDev()">
+                <button type="button" class="btn btn-danger ml-1" id="confirmDelete">
                     <i class="bx bx-check d-block d-sm-none"></i>
                     <span class="d-none d-sm-block">Delete</span>
                 </button>
@@ -162,86 +162,5 @@
 </div>
 
 @section Scripts{
-    <script type="text/javascript">
-        $(document).ready(function () {
-            $("#newDevSubmit").click(function (e) {
-                var firstName = $('#inputFirstName').val();
-                var lastName = $('#inputLastName').val();
-                var eMail = $('#inputEmail').val();
-                var phone = $('#inputPhone').val();
-
-                var data = {
-                    FirstName: firstName,
-                    LastName: lastName,
-                    Email: eMail,
-                    Phone: phone,
-                }
-                var jsonData = JSON.stringify(data);
-
-                $.ajax({
-                    type: "POST",
-                    url: '@Url.Action("AjaxDevPost", "Developers")',
-                    dataType: 'json',
-                    contentType: 'application/json',
-                    data: jsonData,
-                    success: function () {
-                        location.reload();
-                    }
-                });
-            });
-            $("#editDevSubmit").click(function (e) {
-                var firstName = $('#editFirstName').val();
-                var lastName = $('#editLastName').val();
-                var eMail = $('#editEmail').val();
-                var phone = $('#editPhone').val();
-
-                var data = {
-                    Id: Id,
-                    FirstName: firstName,
-                    LastName: lastName,
-                    Email: eMail,
-                    Phone: phone,
-                }
-                var jsonData = JSON.stringify(data);
-                $.ajax({
-                    type: "PUT",
-                    url: '@Url.Action("AjaxDevEdit", "Developers")',
-                    dataType: 'json',
-                    contentType: 'application/json',
-                    data: jsonData,
-                    success: function () {
-                        location.reload();
-                    }
-                });
-            });
-        });
-        var Id;
-        function modalData(id) {
-            Id = id;
-        }
-        function confirmInfo() {
-            document.getElementById("fullNameConfirm").innerHTML = document.getElementById("devFName-" + Id).innerHTML + " " + document.getElementById("devLName-" + Id).innerHTML;
-        }
-        function delDev() {
-            var link = '@Url.Action("AjaxDeleteDev", "Developers")';
-            link = link + "?id=" + Id;
-            $.ajax({
-                url: link,
-                dataType: "json",
-                type: "DELETE",
-                contentType: 'application/json'
-            });
-            setTimeout(location.reload.bind(location), 300);
-        }
-        function dataPreview(id) {
-            var devFName = "devFName-" + id;
-            var devLName = "devLName-" + id;
-            var devEMail = "devEMail-" + id;
-            var devPhone = "devPhone-" + id;
-            document.getElementById("editFirstName").value = document.getElementById(devFName).innerHTML;
-            document.getElementById("editLastName").value = document.getElementById(devLName).innerHTML;
-            document.getElementById("editEmail").value = document.getElementById(devEMail).innerHTML;
-            document.getElementById("editPhone").value = document.getElementById(devPhone).innerHTML;
-        }
-    </script>
+    <script src="~/js/developers-list.js"></script>
 }

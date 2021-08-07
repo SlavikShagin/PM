@@ -66,5 +66,11 @@ namespace ProjectManager.Services.Developer
             _repository.SaveChanges();
             return entity;
         }
+
+        public string CheckIfEmailExists(string eMail)
+        {
+            var checkEmail = _repository.FindEMail(eMail);
+            return checkEmail;
+        }
     }
 }

@@ -1,4 +1,5 @@
-﻿using ProjectManager.EntityFramework;
+﻿using ProjectManager.Database;
+using ProjectManager.EntityFramework;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -48,6 +49,20 @@ namespace ProjectManager.Repository
         public void Update(T entity)
         {
             _dbContext.Update(entity);
+        }
+
+        public string FindEMail(string eMail)
+        {
+            var entity = _dbContext.Developers.FirstOrDefault(e => e.EMail == eMail);
+            if (entity == null)
+            {
+                return "";
+            }
+            else
+            {
+                return entity.EMail;
+            }
+            
         }
     }
 }
