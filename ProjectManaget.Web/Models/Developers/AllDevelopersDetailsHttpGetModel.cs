@@ -10,6 +10,7 @@ namespace ProjectManager.Web.Models.Developers
             DevelopersList = new List<DeveloperEntity>();
         }
 
+        public PageViewModel PageViewModel { get; set; }
         public List<DeveloperEntity> DevelopersList { get; set; }
     }
 }

@@ -2,8 +2,10 @@
 using Microsoft.AspNetCore.Mvc;
 using ProjectManager.Services.Developer;
 using ProjectManager.Services.Project;
+using ProjectManager.Web.Models;
 using ProjectManager.Web.Models.Projects;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace ProjectManager.Web.Controllers
@@ -28,13 +30,18 @@ namespace ProjectManager.Web.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> List()
+        public async Task<IActionResult> List(int page = 1)
         {
             var getAllProjects = await _projectService.GetAll();
+            int pageSize = 3;
+            var count = getAllProjects.Count();
+            var data = getAllProjects.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+            PageViewModel pageViewModel = new PageViewModel(count, page, pageSize);
 
             var vm = new AllProjectsDetailsHttpGetModel()
             {
-                ProjectsList = getAllProjects,
+                PageViewModel = pageViewModel,
+                ProjectsList = data,
             };
 
             return View(vm);

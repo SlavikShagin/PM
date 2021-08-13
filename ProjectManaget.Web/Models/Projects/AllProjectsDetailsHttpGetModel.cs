@@ -10,6 +10,7 @@ namespace ProjectManager.Web.Models.Projects
             ProjectsList = new List<ProjectEntity>();
         }
 
+        public PageViewModel PageViewModel { get; set; }
         public List<ProjectEntity> ProjectsList { get; set; }
     }
 }

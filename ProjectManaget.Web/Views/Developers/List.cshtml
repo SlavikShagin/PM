@@ -48,6 +48,39 @@
                     }
                 </tbody>
             </table>
+            <ul class="pagination pagination-primary  justify-content-center">
+                @if (Model.PageViewModel.HasPreviousPage)
+                {
+                    <li class="page-item ">
+                        <a asp-action="List"
+                           asp-route-page="@(Model.PageViewModel.PageNumber - 1)"
+                           class="page-link">
+                            Previous
+                        </a>
+                    </li>
+                }
+                @for (var page = 1; page <= Model.PageViewModel.TotalPages; page++)
+                {
+                    @if (page == Model.PageViewModel.PageNumber)
+                    {
+                        <li class="page-item active"><a class="page-link" asp-action="List" asp-route-page="@(page)">@(page)</a></li>
+                    }
+                    else
+                    {
+                        <li class="page-item"><a class="page-link" asp-action="List" asp-route-page="@(page)">@(page)</a></li>
+                    }
+                }
+                @if (Model.PageViewModel.HasNextPage)
+                {
+                    <li class="page-item ">
+                        <a asp-action="List"
+                           asp-route-page="@(Model.PageViewModel.PageNumber + 1)"
+                           class="page-link">
+                            Next
+                        </a>
+                    </li>
+                }
+            </ul>
         </div>
     </div>
 </section>

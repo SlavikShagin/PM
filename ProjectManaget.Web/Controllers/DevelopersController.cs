@@ -1,8 +1,10 @@
 ﻿using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using ProjectManager.Services.Developer;
+using ProjectManager.Web.Models;
 using ProjectManager.Web.Models.Developers;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace ProjectManager.Web.Controllers
@@ -23,13 +25,18 @@ namespace ProjectManager.Web.Controllers
             _validatorEditDeveloperModel = validatorEditDeveloperModel;
         }
         [HttpGet]
-        public async Task<IActionResult> List()
+        public async Task<IActionResult> List(int page = 1)
         {
             var getAllDev = await _developerService.GetAll();
+            int pageSize = 3;
+            var count = getAllDev.Count();
+            var data = getAllDev.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+            PageViewModel pageViewModel = new PageViewModel(count, page, pageSize);
 
             var vm = new AllDevelopersDetailsHttpGetModel()
             {
-                DevelopersList = getAllDev,
+                PageViewModel = pageViewModel,
+                DevelopersList = data,
             };
 
             return View(vm);
