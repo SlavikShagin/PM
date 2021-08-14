@@ -10,6 +10,8 @@ namespace ProjectManager.Database
         public string EMail { get; set; }
         public string Phone { get; set; }
 
-        public ICollection<ProjectEntity> Projects { get; set; }
+#nullable enable
+        public List<ProjectEntity>? Projects { get; set; }
+#nullable disable
     }
 }

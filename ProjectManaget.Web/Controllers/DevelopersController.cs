@@ -46,6 +46,7 @@ namespace ProjectManager.Web.Controllers
         public async Task<JsonResult> AjaxDevelopersList()
         {
             var getAllDev = await _developerService.GetAll();
+
             return Json(getAllDev);
         }
 
@@ -89,11 +90,11 @@ namespace ProjectManager.Web.Controllers
             int developerId = Int32.Parse(Request.Query["id"]);
             await _developerService.DeleteEntry(developerId);
 
-            return Ok();
+            return Json(new { success = true });
         }
 
         [HttpPut]
-        public async Task<IActionResult> AjaxDevEdit([FromForm] UpdateDeveloperHttpPutModel vm)
+        public async Task<IActionResult> AjaxDevEdit([FromBody] UpdateDeveloperHttpPutModel vm)
         {
             var validationResult = _validatorEditDeveloperModel.Validate(vm);
 

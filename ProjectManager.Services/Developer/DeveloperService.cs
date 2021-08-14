@@ -2,6 +2,7 @@
 using ProjectManager.Database;
 using ProjectManager.Repository;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace ProjectManager.Services.Developer
@@ -32,7 +33,7 @@ namespace ProjectManager.Services.Developer
         public async Task<List<DeveloperEntity>> GetAll()
         {
             List<DeveloperEntity> developerList;
-            developerList = await _repository.Entities.ToListAsync();
+            developerList = await _repository.Entities.OrderByDescending(e=> e.Id).ToListAsync();
             return developerList;
         }
 

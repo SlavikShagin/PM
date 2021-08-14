@@ -1,5 +1,4 @@
-﻿using ProjectManager.Database;
-using ProjectManager.EntityFramework;
+﻿using ProjectManager.EntityFramework;
 using System.Collections.Generic;
 using System.Linq;
 

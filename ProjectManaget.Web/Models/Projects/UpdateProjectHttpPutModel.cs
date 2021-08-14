@@ -1,6 +1,4 @@
 ﻿using FluentValidation;
-using ProjectManager.Database;
-using System.Collections.Generic;
 
 namespace ProjectManager.Web.Models.Projects
 {

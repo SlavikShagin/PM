@@ -2,7 +2,7 @@
 
 namespace ProjectManager.EntityFramework.Migrations
 {
-    public partial class Initial : Migration
+    public partial class initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -12,10 +12,10 @@ namespace ProjectManager.EntityFramework.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    EMail = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Phone = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    FirstName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
+                    LastName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
+                    EMail = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
+                    Phone = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -28,7 +28,7 @@ namespace ProjectManager.EntityFramework.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
                     ProjectSubject = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>

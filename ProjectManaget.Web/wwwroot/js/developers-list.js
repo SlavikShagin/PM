@@ -36,7 +36,7 @@
         var id = document.getElementById('editFirstName').getAttribute('data-edit-id');
 
         var data = {
-            Id: id,
+            Id: Number(id),
             FirstName: firstName,
             LastName: lastName,
             Email: eMail,

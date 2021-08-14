@@ -59,6 +59,16 @@
                         </a>
                     </li>
                 }
+                else
+                {
+                    <li class="page-item disabled">
+                        <a asp-action="List"
+                           asp-route-page="@(Model.PageViewModel.PageNumber)"
+                           class="page-link">
+                            Previous
+                        </a>
+                    </li>
+                }
                 @for (var page = 1; page <= Model.PageViewModel.TotalPages; page++)
                 {
                     @if (page == Model.PageViewModel.PageNumber)
@@ -75,6 +85,16 @@
                     <li class="page-item ">
                         <a asp-action="List"
                            asp-route-page="@(Model.PageViewModel.PageNumber + 1)"
+                           class="page-link">
+                            Next
+                        </a>
+                    </li>
+                }
+                else
+                {
+                    <li class="page-item disabled">
+                        <a asp-action="List"
+                           asp-route-page="@(Model.PageViewModel.PageNumber)"
                            class="page-link">
                             Next
                         </a>

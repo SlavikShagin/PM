@@ -10,10 +10,10 @@ namespace ProjectManager.EntityFramework.Config
         {
             builder.ToTable("Developers").HasKey(x => x.Id);
 
-            builder.Property(x => x.FirstName).IsRequired();
-            builder.Property(x => x.LastName).IsRequired();
-            builder.Property(x => x.EMail).IsRequired();
-            builder.Property(x => x.Phone).IsRequired();
+            builder.Property(x => x.FirstName).IsRequired().HasMaxLength(256);
+            builder.Property(x => x.LastName).IsRequired().HasMaxLength(256);
+            builder.Property(x => x.EMail).IsRequired().HasMaxLength(256);
+            builder.Property(x => x.Phone).IsRequired().HasMaxLength(256);
         }
     }
 }

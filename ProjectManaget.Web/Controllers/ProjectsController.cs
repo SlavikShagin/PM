@@ -1,6 +1,7 @@
 ﻿using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using ProjectManager.Services.Developer;
+using ProjectManager.Services.Link;
 using ProjectManager.Services.Project;
 using ProjectManager.Web.Models;
 using ProjectManager.Web.Models.Projects;
@@ -14,19 +15,25 @@ namespace ProjectManager.Web.Controllers
     {
         private readonly IValidator<CreateProjectHttpPostModel> _validatorCreateProjectModel;
         private readonly IValidator<UpdateProjectHttpPutModel> _validatorUpdateProjectModel;
+        private readonly IValidator<LinkDevToProjectHttpPostModel> _validatorLinkDevToProjectHttpPostModel;
         private readonly IProjectService _projectService;
         private readonly IDeveloperService _developerService;
+        private readonly ILinkDevToProjectService _linkDevToProjectService;
 
         public ProjectsController(
             IValidator<CreateProjectHttpPostModel> validatorCreateProjectModel,
             IValidator<UpdateProjectHttpPutModel> validatorUpdateProjectModel,
+            IValidator<LinkDevToProjectHttpPostModel> validatorLinkDevToProjectHttpPostModel,
             IProjectService projectService,
-            IDeveloperService developerService)
+            IDeveloperService developerService,
+            ILinkDevToProjectService linkDevToProjectService)
         {
             _projectService = projectService;
             _developerService = developerService;
+            _linkDevToProjectService = linkDevToProjectService;
             _validatorCreateProjectModel = validatorCreateProjectModel;
             _validatorUpdateProjectModel = validatorUpdateProjectModel;
+            _validatorLinkDevToProjectHttpPostModel = validatorLinkDevToProjectHttpPostModel;
         }
 
         [HttpGet]
@@ -99,27 +106,57 @@ namespace ProjectManager.Web.Controllers
 
             await _projectService.UpdateProject(vm.Id, vm.Name, vm.ProjectSubject);
 
-            return Ok();
+            return Json(new { success = true });
         }
 
         [HttpDelete]
         public async Task<IActionResult> AjaxDeletePrj()
         {
-            int projectId = Int32.Parse(Request.Query["id"]);
+            int projectId = int.Parse(Request.Query["id"]);
             await _projectService.DeleteProject(projectId);
 
-            return Ok();
+            return Json(new { success = true });
         }
 
-        [HttpPost]
-        public async Task AjaxAddLink()
+        [HttpPut]
+        public async Task<IActionResult> AjaxAddLink([FromBody] LinkDevToProjectHttpPostModel vm)
         {
+            var validationResult = _validatorLinkDevToProjectHttpPostModel.Validate(vm);
 
+            if (!validationResult.IsValid)
+            {
+                var errorResponse = new
+                {
+                    ErrorType = "ValidationError",
+                    Errors = validationResult.Errors
+                };
+
+                return BadRequest(errorResponse);
+            }
+
+            await _linkDevToProjectService.Link(vm.developerId, vm.projectId);
+
+            return Json(new { success = true });
         }
-        [HttpDelete]
-        public async Task AjaxRemoveLink()
+        [HttpPut]
+        public async Task<IActionResult> AjaxRemoveLink([FromBody] LinkDevToProjectHttpPostModel vm)
         {
+            var validationResult = _validatorLinkDevToProjectHttpPostModel.Validate(vm);
 
+            if (!validationResult.IsValid)
+            {
+                var errorResponse = new
+                {
+                    ErrorType = "ValidationError",
+                    Errors = validationResult.Errors
+                };
+
+                return BadRequest(errorResponse);
+            }
+
+            await _linkDevToProjectService.UnLink(vm.developerId, vm.projectId);
+
+            return Json(new { success = true });
         }
     }
 }

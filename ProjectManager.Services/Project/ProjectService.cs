@@ -2,6 +2,7 @@
 using ProjectManager.Database;
 using ProjectManager.Repository;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace ProjectManager.Services.Project
@@ -22,7 +23,6 @@ namespace ProjectManager.Services.Project
                 Name = name,
                 ProjectSubject = projectsubject,
             };
-
             _repository.Add(newRecord);
             _repository.SaveChanges();
         }
@@ -30,7 +30,7 @@ namespace ProjectManager.Services.Project
         public async Task<List<ProjectEntity>> GetAll()
         {
             List<ProjectEntity> developerList;
-            return developerList = await _repository.Entities.ToListAsync();
+            return developerList = await _repository.Entities.OrderByDescending(e => e.Id).ToListAsync();
         }
 
         public async Task<ProjectEntity> GetById(int developerId)
@@ -45,7 +45,7 @@ namespace ProjectManager.Services.Project
             ProjectEntity entity = await _repository.Entities.FirstOrDefaultAsync(e => e.Id == projectId);
             _repository.Remove(entity);
             _repository.SaveChanges();
-            return entity; /*TODO fix*/
+            return entity;
         }
 
         public async Task<ProjectEntity> UpdateProject(int id, string name, string projectsubject)

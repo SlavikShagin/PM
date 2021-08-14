@@ -8,10 +8,14 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using ProjectManager.EntityFramework;
 using ProjectManager.Repository;
+using ProjectManager.Services;
 using ProjectManager.Services.Developer;
+using ProjectManager.Services.Link;
 using ProjectManager.Services.Project;
+using ProjectManager.Web.Models;
 using ProjectManager.Web.Models.Developers;
 using ProjectManager.Web.Models.Projects;
+using static ProjectManager.Web.Models.LinkDevToProjectHttpPostModel;
 using static ProjectManager.Web.Models.Projects.UpdateProjectHttpPutModel;
 
 namespace ProjectManager.Web
@@ -43,6 +47,7 @@ namespace ProjectManager.Web
 
             services.AddTransient<IDeveloperService, DeveloperService>();
             services.AddTransient<IProjectService, ProjectService>();
+            services.AddTransient<ILinkDevToProjectService, LinkDevToProjectService>();
 
             #region Repository
             services.AddTransient(typeof(IRepository<>), typeof(Repository<>));
@@ -53,6 +58,7 @@ namespace ProjectManager.Web
             services.AddTransient<IValidator<CreateProjectHttpPostModel>, CreateProjectHttpPostModelValidator>();
             services.AddTransient<IValidator<UpdateProjectHttpPutModel>, UpdateProjectHttpPutModelValidator>();
             services.AddTransient<IValidator<UpdateDeveloperHttpPutModel>, UpdateDeveloperHttpPutModelValidator>();
+            services.AddTransient<IValidator<LinkDevToProjectHttpPostModel>, LinkDevToProjectHttpPostModelValidator>();
             #endregion
         }
 

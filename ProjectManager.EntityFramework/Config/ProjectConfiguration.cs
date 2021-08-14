@@ -12,7 +12,7 @@ namespace ProjectManager.EntityFramework.Config
 
             builder.ToTable("Projects").HasKey(x => x.Id);
 
-            builder.Property(x => x.Name).IsRequired();
+            builder.Property(x => x.Name).IsRequired().HasMaxLength(256);
             builder.Property(x => x.ProjectSubject).IsRequired();
         }
     }

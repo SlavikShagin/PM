@@ -8,6 +8,8 @@ namespace ProjectManager.Database
         public string Name { get; set; }
         public string ProjectSubject { get; set; }
 
-        public ICollection<DeveloperEntity> Developers { get; set; }
+#nullable enable
+        public List<DeveloperEntity>? Developers { get; set; }
+#nullable disable
     }
 }

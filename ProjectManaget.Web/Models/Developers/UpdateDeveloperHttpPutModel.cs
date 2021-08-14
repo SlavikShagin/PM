@@ -18,6 +18,7 @@ namespace ProjectManager.Web.Models.Developers
             RuleFor(e => e.FirstName).NotEmpty();
             RuleFor(e => e.LastName).NotEmpty();
             RuleFor(e => e.EMail).NotEmpty();
+            RuleFor(e => e.EMail).EmailAddress();
             RuleFor(e => e.Phone).NotEmpty();
         }
     }

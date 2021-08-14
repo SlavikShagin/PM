@@ -32,7 +32,7 @@
                                 <button type="button" id="listOfDevs" data-project="@prj.Id" class="btn btn-primary btn-sm dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     List of Developers
                                 </button>
-                                <div class="dropdown-menu" id="devListOptions-@prj.Id" style="margin: 0px;">
+                                <div class="dropdown-menu" id="devListOptions-@prj.Id" name="dropdown-container" style="margin: 0px; overflow-y: scroll; height:auto; max-height: 200px;">
                                     <p class="dropdown-item">ToDo</p>
                                 </div>
                             </td>
@@ -55,6 +55,16 @@
                         </a>
                     </li>
                 }
+                else
+                {
+                    <li class="page-item disabled">
+                        <a asp-action="List"
+                           asp-route-page="@(Model.PageViewModel.PageNumber)"
+                           class="page-link" >
+                            Previous
+                        </a>
+                    </li>
+                }
                 @for (var page = 1; page <= Model.PageViewModel.TotalPages; page++)
                 {
                     @if (page == Model.PageViewModel.PageNumber)
@@ -71,6 +81,16 @@
                     <li class="page-item ">
                         <a asp-action="List"
                            asp-route-page="@(Model.PageViewModel.PageNumber + 1)"
+                           class="page-link">
+                            Next
+                        </a>
+                    </li>
+                }
+                else
+                {
+                    <li class="page-item disabled" >
+                        <a asp-action="List"
+                           asp-route-page="@(Model.PageViewModel.PageNumber)"
                            class="page-link">
                             Next
                         </a>
@@ -142,7 +162,7 @@
                     <i class="bx bx-x d-block d-sm-none"></i>
                     <span class="d-none d-sm-block">Cancel</span>
                 </button>
-                <button id="editPrjSubmit" type="button" class="btn btn-primary ml-1" data-bs-dismiss="modal">
+                <button id="editPrjSubmit" type="submit" class="btn btn-primary ml-1" data-bs-dismiss="modal">
                     <i class="bx bx-check d-block d-sm-none"></i>
                     <span class="d-none d-sm-block">Edit</span>
                 </button>
