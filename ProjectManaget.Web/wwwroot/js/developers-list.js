@@ -102,48 +102,6 @@
                     }
                 }
                 $(content).appendTo(listDiv);
-                $('[id="developerChecker"]').click(function () {
-                    if (this.checked) {
-                        var idDeveloper = this.getAttribute('data-developer');
-                        var idProject = this.getAttribute('data-project');
-                        var link = "AjaxAddLink";
-                        var data = {
-                            developerId: Number(idDeveloper),
-                            projectId: Number(idProject)
-                        }
-                        var jsonData = JSON.stringify(data);
-                        $.ajax({
-                            type: "PUT",
-                            url: link,
-                            dataType: 'json',
-                            contentType: 'application/json',
-                            data: jsonData,
-                            success: function () {
-                                console.log("Assigned")
-                            }
-                        });
-                    }
-                    else if (!this.checked) {
-                        var idDeveloper = this.getAttribute('data-developer');
-                        var idProject = this.getAttribute('data-project');
-                        var link = "AjaxRemoveLink";
-                        var data = {
-                            developerId: Number(idDeveloper),
-                            projectId: Number(idProject)
-                        }
-                        var jsonData = JSON.stringify(data);
-                        $.ajax({
-                            type: "PUT",
-                            url: link,
-                            dataType: 'json',
-                            contentType: 'application/json',
-                            data: jsonData,
-                            success: function () {
-                                console.log("Unassigned")
-                            }
-                        });
-                    }
-                });
             }, error: function (xhr) { },
         });
     });
