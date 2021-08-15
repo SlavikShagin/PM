@@ -11,7 +11,7 @@ namespace ProjectManager.Database
         public string Phone { get; set; }
 
 #nullable enable
-        public List<ProjectEntity>? Projects { get; set; }
+        public HashSet<ProjectEntity>? Projects { get; set; }
 #nullable disable
     }
 }

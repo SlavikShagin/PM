@@ -75,20 +75,20 @@
             dataType: "json",
             contentType: 'application/json',
             success: function (data) {
+                console.log(data);
                 for (var x = 0; x < data.length; x++) {
                     content += '<p class="dropdown-item">';
-                    try {
-                        if (id in data[x].projects) {
+
+                    //for (var item = 0; item < data[x].projects.length; item++) {
+
+                    if (data[x].projects.some(item=> item.id == id)) {
                             content += '<input type="checkbox" class="form-check-input" checked data-developer="' + data[x].id + ' " data-project="' + id + '"  form-check-primary form-check-glow" name="customCheck" id="developerChecker">';
                         }
                         else {
                             content += '<input type="checkbox" class="form-check-input" data-developer="' + data[x].id + '" data-project="' + id + '" form-check-primary form-check-glow" name="customCheck" id="developerChecker">';
                         }
-                    }
-                    catch (e) { }
-                    finally {
-                        content += '<input type="checkbox" class="form-check-input" data-developer="' + data[x].id + '" data-project="' + id + '" form-check-primary form-check-glow" name="customCheck" id="developerChecker">';
-                    }
+                    //}
+
                     content += data[x].firstName + " " + data[x].lastName;
                     content += '</p>';
                 }
@@ -135,9 +135,11 @@
                         });
                     }
                 });
-            }
+            }, error: function (xhr) {
+                console.log(xhr);
+            },
         });
     });
-    
+
 });
 var Id;

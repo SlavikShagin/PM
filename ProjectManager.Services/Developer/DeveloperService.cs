@@ -33,7 +33,7 @@ namespace ProjectManager.Services.Developer
         public async Task<List<DeveloperEntity>> GetAll()
         {
             List<DeveloperEntity> developerList;
-            developerList = await _repository.Entities.OrderByDescending(e=> e.Id).ToListAsync();
+            developerList = await _repository.Entities.Include(e=> e.Projects).OrderByDescending(e=> e.Id).ToListAsync();
             return developerList;
         }
 

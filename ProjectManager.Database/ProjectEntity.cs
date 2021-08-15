@@ -9,7 +9,7 @@ namespace ProjectManager.Database
         public string ProjectSubject { get; set; }
 
 #nullable enable
-        public List<DeveloperEntity>? Developers { get; set; }
+        public HashSet<DeveloperEntity>? Developers { get; set; }
 #nullable disable
     }
 }
