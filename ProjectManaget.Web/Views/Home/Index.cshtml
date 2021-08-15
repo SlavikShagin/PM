@@ -9,6 +9,40 @@
         </div>
         <div class="card-body">
             Enjoy:)
+            <hr>
+            <div class="form-group position-relative has-icon-left">
+                <input type="text" class="form-control" placeholder="Search for projects" id="search-bar" name="search-bar" autocomplete="off">
+                <div class="form-control-icon">
+                    <i class="bi bi-search"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-body">
+            <div id="search-container"></div>
         </div>
     </div>
 </section>
+
+@section Scripts{
+    <script>
+        document.getElementById('search-bar').addEventListener('keyup', function (e) {
+            Search();
+        });
+
+        function Search() {
+            let question = document.getElementById("search-bar").value;
+
+            $.ajax({
+                type: "POST",
+                url: "/Projects/SearchByName",
+                data: { search: question },
+                dataType: "html",
+                success: function (data) {
+                    $('search-container').html(data);
+                }
+            });
+        }
+    </script>
+}

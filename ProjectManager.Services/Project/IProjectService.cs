@@ -7,6 +7,7 @@ namespace ProjectManager.Services.Project
     public interface IProjectService
     {
         Task<ProjectEntity> GetById(int developerId);
+        Task<List<ProjectEntity>> GetByName(string name);
         Task<List<ProjectEntity>> GetAll();
         Task Add(string name, string projectsubject);
         Task<ProjectEntity> DeleteProject(int projectId);

@@ -6,6 +6,7 @@ using ProjectManager.Services.Project;
 using ProjectManager.Web.Models;
 using ProjectManager.Web.Models.Projects;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -157,6 +158,21 @@ namespace ProjectManager.Web.Controllers
             await _linkDevToProjectService.UnLink(vm.developerId, vm.projectId);
 
             return Json(new { success = true });
+        }
+
+        [HttpGet]
+        public async Task<JsonResult> AjaxProjectsList()
+        {
+            var getAllProjects = await _projectService.GetAll();
+            return Json(getAllProjects);
+        }
+
+        [HttpPost]
+        public IActionResult SearchByName(string search)
+        {
+            //AllProjectsDetailsHttpGetModel projects = _projectService.GetByName(search);
+
+            return PartialView(_projectService.GetByName(search));
         }
     }
 }

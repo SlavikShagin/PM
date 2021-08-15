@@ -81,5 +81,71 @@
         });
         setTimeout(location.reload.bind(location), 300);
     });
+
+    $('[id="listOfProjects"]').focus(function () {
+        var id = this.getAttribute('data-developer');
+        var listDiv = document.getElementById("prjListOptions-" + id);
+        listDiv.innerHTML = "";
+        var link = '../projects/AjaxProjectsList';
+        var content = "";
+        $.ajax({
+            url: link,
+            type: "GET",
+            dataType: "json",
+            contentType: 'application/json',
+            success: function (data) {
+                for (var x = 0; x < data.length; x++) {
+                    if (data[x].developers.some(item => item.id == id)) {
+                        content += '<p class="dropdown-item" id="project-item">';
+                        content += data[x].name;
+                        content += '</p>';
+                    }
+                }
+                $(content).appendTo(listDiv);
+                $('[id="developerChecker"]').click(function () {
+                    if (this.checked) {
+                        var idDeveloper = this.getAttribute('data-developer');
+                        var idProject = this.getAttribute('data-project');
+                        var link = "AjaxAddLink";
+                        var data = {
+                            developerId: Number(idDeveloper),
+                            projectId: Number(idProject)
+                        }
+                        var jsonData = JSON.stringify(data);
+                        $.ajax({
+                            type: "PUT",
+                            url: link,
+                            dataType: 'json',
+                            contentType: 'application/json',
+                            data: jsonData,
+                            success: function () {
+                                console.log("Assigned")
+                            }
+                        });
+                    }
+                    else if (!this.checked) {
+                        var idDeveloper = this.getAttribute('data-developer');
+                        var idProject = this.getAttribute('data-project');
+                        var link = "AjaxRemoveLink";
+                        var data = {
+                            developerId: Number(idDeveloper),
+                            projectId: Number(idProject)
+                        }
+                        var jsonData = JSON.stringify(data);
+                        $.ajax({
+                            type: "PUT",
+                            url: link,
+                            dataType: 'json',
+                            contentType: 'application/json',
+                            data: jsonData,
+                            success: function () {
+                                console.log("Unassigned")
+                            }
+                        });
+                    }
+                });
+            }, error: function (xhr) { },
+        });
+    });
 });
 var Id;

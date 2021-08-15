@@ -33,11 +33,11 @@
                             <td id="devEMail-@dev.Id">@dev.EMail</td>
                             <td id="devPhone-@dev.Id">@dev.Phone</td>
                             <td>
-                                <button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <button type="button" id="listOfProjects" data-developer="@dev.Id" class="btn btn-primary btn-sm dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     List of projects
                                 </button>
-                                <div class="dropdown-menu" id="prjListOptions" style="margin: 0px;">
-                                    <p class="dropdown-item">ToDo</p>
+                                <div class="dropdown-menu" id="prjListOptions-@dev.Id" name="dropdown-container" style="margin: 0px; overflow-y: scroll; height: auto; max-height: 200px;">
+                                    <p class="dropdown-item">None</p>
                                 </div>
                             </td>
                             <td>

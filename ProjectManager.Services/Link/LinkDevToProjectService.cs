@@ -23,12 +23,9 @@ namespace ProjectManager.Services
         public async Task Link(int developerId, int projectId)
         {
             var developer = _repositoryDev.GetById(developerId);
-            var project = _repositoryPrj.GetById(projectId);
-
-            var devlist = new HashSet<DeveloperEntity>();
-            devlist.Add(developer);
-
-            project.Developers = devlist;
+            var projects = _repositoryPrj.Entities.Include(x => x.Developers).ToHashSet();
+            var project = projects.FirstOrDefault(e => e.Id == projectId);
+            project.Developers.Add(developer);
 
             _repositoryPrj.Update(project);
             _repositoryPrj.SaveChanges();

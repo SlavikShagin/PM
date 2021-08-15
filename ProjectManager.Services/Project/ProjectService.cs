@@ -29,8 +29,8 @@ namespace ProjectManager.Services.Project
 
         public async Task<List<ProjectEntity>> GetAll()
         {
-            List<ProjectEntity> developerList;
-            return developerList = await _repository.Entities.OrderByDescending(e => e.Id).ToListAsync();
+            List<ProjectEntity> projectsList;
+            return projectsList = await _repository.Entities.Include(e=> e.Developers).OrderByDescending(e => e.Id).ToListAsync();
         }
 
         public async Task<ProjectEntity> GetById(int developerId)
@@ -38,6 +38,16 @@ namespace ProjectManager.Services.Project
             var developer = await _repository.Entities.FirstOrDefaultAsync(e => e.Id == developerId);
 
             return developer;
+        }
+
+        public async Task<List<ProjectEntity>> GetByName(string name)
+        {
+            var projectsList = (
+                from t in _repository.Entities
+                where t.Name.Contains(name)
+                select t)
+                .ToList();
+            return projectsList;
         }
 
         public async Task<ProjectEntity> DeleteProject(int projectId)

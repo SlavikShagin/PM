@@ -1,0 +1,88 @@
+﻿@using ProjectManager.Web.Models.Projects;
+
+@model AllProjectsDetailsHttpGetModel
+
+<table class="table table-striped" id="table1">
+    <thead>
+        <tr>
+            <th>Project Name</th>
+            <th>Description</th>
+            <th>Involved Developers</th>
+            <th>Controls</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var prj in Model.ProjectsList)
+        {
+            <tr>
+                <td id="prjName-@prj.Id">@prj.Name</td>
+                <td id="prjDesc-@prj.Id">@prj.ProjectSubject</td>
+                <td id="prjDevs-@prj.Id">
+                    <button type="button" id="listOfDevs" data-project="@prj.Id" class="btn btn-primary btn-sm dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        List of Developers
+                    </button>
+                    <div class="dropdown-menu" id="devListOptions-@prj.Id" name="dropdown-container" style="margin: 0px; overflow-y: scroll; height:auto; max-height: 200px;">
+                        <p class="dropdown-item">None</p>
+                    </div>
+                </td>
+                <td>
+                    <a href="#" id="editProject" class="btn icon icon-left btn-info" style="width: 100%; margin: 1px" data-project="@prj.Id" data-bs-toggle="modal" data-bs-target="#editProjectModal">Edit</a>
+                    <a href="#" id="deleteProject" class="btn icon icon-left btn-danger" style="width: 100%; margin: 1px" data-project="@prj.Id" data-bs-toggle="modal" data-bs-target="#deleteQuestion">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<ul class="pagination pagination-primary  justify-content-center">
+    @if (Model.PageViewModel.HasPreviousPage)
+    {
+        <li class="page-item ">
+            <a asp-action="List"
+               asp-route-page="@(Model.PageViewModel.PageNumber - 1)"
+               class="page-link">
+                Previous
+            </a>
+        </li>
+    }
+    else
+    {
+        <li class="page-item disabled">
+            <a asp-action="List"
+               asp-route-page="@(Model.PageViewModel.PageNumber)"
+               class="page-link">
+                Previous
+            </a>
+        </li>
+    }
+    @for (var page = 1; page <= Model.PageViewModel.TotalPages; page++)
+    {
+        @if (page == Model.PageViewModel.PageNumber)
+        {
+            <li class="page-item active"><a class="page-link" asp-action="List" asp-route-page="@(page)">@(page)</a></li>
+        }
+        else
+        {
+            <li class="page-item"><a class="page-link" asp-action="List" asp-route-page="@(page)">@(page)</a></li>
+        }
+    }
+    @if (Model.PageViewModel.HasNextPage)
+    {
+        <li class="page-item ">
+            <a asp-action="List"
+               asp-route-page="@(Model.PageViewModel.PageNumber + 1)"
+               class="page-link">
+                Next
+            </a>
+        </li>
+    }
+    else
+    {
+        <li class="page-item disabled">
+            <a asp-action="List"
+               asp-route-page="@(Model.PageViewModel.PageNumber)"
+               class="page-link">
+                Next
+            </a>
+        </li>
+    }
+</ul>
