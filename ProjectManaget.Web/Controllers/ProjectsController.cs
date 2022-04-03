@@ -40,11 +40,15 @@ namespace ProjectManager.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> List(int page = 1)
         {
-            var getAllProjects = await _projectService.GetAll();
+            var allProjects = await _projectService.GetAll();
+            //generic + services
             int pageSize = 3;
-            var count = getAllProjects.Count();
-            var data = getAllProjects.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+            var count = allProjects.Count();
+            var data = allProjects.Skip((page - 1) * pageSize).Take(pageSize).ToList();
             PageViewModel pageViewModel = new PageViewModel(count, page, pageSize);
+            //eof
+
+            //ProjectListResponce
 
             var vm = new AllProjectsDetailsHttpGetModel()
             {

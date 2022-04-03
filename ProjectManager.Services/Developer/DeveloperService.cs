@@ -47,6 +47,11 @@ namespace ProjectManager.Services.Developer
         public async Task<DeveloperEntity> DeleteEntry(int developerId)
         {
             DeveloperEntity entity = await _repository.Entities.FirstOrDefaultAsync(e => e.Id == developerId);
+            //todo return error if not exists
+            if (entity == null)
+            {
+                //return Task.FromResult
+            }
             _repository.Remove(entity);
             _repository.SaveChanges();
             return entity; /*TODO fix*/

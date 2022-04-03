@@ -50,7 +50,7 @@ namespace ProjectManager.Repository
             _dbContext.Update(entity);
         }
 
-        public string FindEMail(string eMail)
+        public string FindEMail(string eMail)//FindDeveloperByEMail :: DeveloperRepository
         {
             var entity = _dbContext.Developers.FirstOrDefault(e => e.EMail == eMail);
             if (entity == null)
